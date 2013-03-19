@@ -1,0 +1,50 @@
+<html>
+	<head>
+		<script src="./jquery.js"
+				type="text/javascript">
+		</script>
+	</head>
+	<body>
+		<h1>SOA I LOVE EEEET</h1>
+		<div id="content">
+		</div>
+		<button id="my_button">Display Info</button>
+	</body>
+	<script>
+	var x = "data";
+
+	$(document).ready(function() {
+		$("#my_button").click(function() {
+			var access_token = "AAACEdEose0cBAIXACOQy1ZACk6b5eGd2nhi4m5AssrwqgQjIWuw6cabddvkj7SNbZApn36qyNRzjkk45K40uByXlkHvKsfdhy28felkoUXex5f75gK";
+			var service_name = "https://graph.facebook.com/1480221622?access_token=" + access_token + "&fields=id,name,address,age_range,birthday,cover,email,gender,languages,relationship_status,religion,interested_in,events.limit(1),tagged.limit(5).fields(from,created_time),photos.limit(5).fields(from,images,created_time,picture),picture,likes.limit(5),friends.limit(5).fields(name),interests.limit(5)";
+			
+			$.getJSON(service_name, function(data) {
+				var name = "Name: "+data["name"]+"<br>"+"Latest Event Attended: "+data["events"]["data"][0]["name"]+"<br>"+"Age: "+data["age_range"]["max"]+"<br>"+"E-mail: "+data["email"]+"<br>"+"Birthday: "+data["birthday"]+"<br>"+"Gender: "+data["gender"]+"<br>"+"Religion: "+data["religion"]+"<br>"+"<img src="+data["cover"]["source"]+">"+"<br>"+data["relationship_status"]+"<br>"+"Languages: "+data["languages"][0]["name"]+"<br>"+data["languages"][1]["name"]+"<br>";
+				$("#content").append(name);
+
+				for (var i = 0; i < data.friends.data.length; i++){
+			    var friends = "<br>" + data.friends.data[i].name + "<br>" + "www.facebook.com/" + data.friends.data[i].id + "<br>";
+				$("#content").append(friends);
+				}
+				
+				for (var i = 0; i < data.likes.data.length; i++){
+				var likes = "<br>" + data.likes.data[i].name + "<br>" + "liked on: " + data.likes.data[i].category + "<br>";
+				$("#content").append(likes);
+				}
+
+				for (var i = 0; i < data.photos.data.length; i++){
+				var photos = "<br>" + "<img src=" + data.photos.data[i].picture + ">" + "<br>" + data.photos.data[i].from.name + "<br>";
+				$("#content").append(photos);
+				}
+
+
+				
+
+		
+				
+				
+			});
+		});
+	});
+	</script>
+</html>
